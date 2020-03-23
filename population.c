@@ -12,10 +12,10 @@ Population new_Population(char name[], int size){
 }
 
 
-int add_people_to_population(Population p, People a){
-  if (p.iterator < p.size){
-    p.people[p.iterator] = a;
-    p.iterator++;
+int add_people_to_population(Population *p, People a){
+  if (p->iterator < p->size){
+    p->people[p->iterator] = a;
+    p->iterator++;
     return 1;
   }else{
     return 0;

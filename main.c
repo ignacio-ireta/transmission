@@ -27,11 +27,11 @@ int main(int argn, char **argv){
 
   p = new_Population("Mexico",8);
   
-  add_people_to_population(p,a1);
-  add_people_to_population(p,a2);
-  add_people_to_population(p,a3);
-  add_people_to_population(p,a4);
-  add_people_to_population(p,a5);
+  add_people_to_population(&p,a1);
+  add_people_to_population(&p,a2);
+  add_people_to_population(&p,a3);
+  add_people_to_population(&p,a4);
+  add_people_to_population(&p,a5);
 
   // name, population
   mc = new_MonteCarlo("Test",p);

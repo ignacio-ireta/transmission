@@ -15,7 +15,7 @@ typedef struct{
 }Population;
 
   Population new_Population(char name[], int size);
-  int add_people_to_population(Population p, People a);
+  int add_people_to_population(Population *p, People a);
 
 #ifdef __cplusplus
 } /* extern "C" */
