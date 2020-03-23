@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include "people.h"
 #include "population.h"
+#include "montecarlo.h"
 
 int main(int argn, char **argv){
 
   People a1,a2,a3,a4,a5;
   Population p;
-
+  MonteCarlo mc;
+  
   
   /*age, 
     gender [0=man,1=woman], 
@@ -31,6 +33,11 @@ int main(int argn, char **argv){
   add_people_to_population(p,a4);
   add_people_to_population(p,a5);
 
+  // name, population
+  mc = new_MonteCarlo("Test",p);
+  // MonteCarlo, steps, print
+  run_MonteCarlo(mc,100,10);
+  
   
   return 0;
 }
