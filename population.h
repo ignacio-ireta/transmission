@@ -10,9 +10,11 @@ extern "C" {
 typedef struct{
   char name[128];
   People people[8];
+  int size; //size of population 8
+  int iterator;  // internal iterator to control the actual population
 }Population;
 
-  Population new_Population(char name[]);
+  Population new_Population(char name[], int size);
   int add_people_to_population(Population p, People a);
 
 #ifdef __cplusplus

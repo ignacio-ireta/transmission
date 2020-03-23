@@ -25,7 +25,7 @@ int main(int argn, char **argv){
   a4 = new_People(48, 0, 0, 0.0, 4.0, 6.0, 3.0, 1.0);
   a5 = new_People(60, 1, 0, 0.0, 6.0, 8.0, 2.0, 4.0);
 
-  p = new_Population("Mexico");
+  p = new_Population("Mexico",8);
   
   add_people_to_population(p,a1);
   add_people_to_population(p,a2);

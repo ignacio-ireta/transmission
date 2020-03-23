@@ -14,8 +14,10 @@ typedef struct{
   float direction[2]; // [x,y] m
 }People;
 
-People new_People(float age, int gender, int status, float time_recovery, float p_x, float p_y, float r_x, float r_y); 
+  People new_People(float age, int gender, int status, float time_recovery, float p_x, float p_y, float r_x, float r_y); 
 
+  void print_People(People people);
+  
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
