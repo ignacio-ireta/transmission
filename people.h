@@ -11,7 +11,7 @@ typedef struct{
   int status; // [0=healty, 1=sick, 2=immune, -1=dead],
   float time_recovery;// [hours]
   float position[2]; //[x,y] m
-  float direction[2]; // [x,y] m
+  float velocity[2]; // [x,y] m
 }People;
 
   People new_People(float age, int gender, int status, float time_recovery, float p_x, float p_y, float r_x, float r_y); 
