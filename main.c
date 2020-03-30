@@ -9,7 +9,11 @@ int main(int argn, char **argv){
   People a1,a2,a3,a4,a5;
   Population p;
   MonteCarlo mc;
-  
+  int steps, prints, npeople;
+
+  steps=10;
+  prints=1;
+  npeople=5;
   
   /*age, 
     gender [0=man,1=woman], 
@@ -36,7 +40,8 @@ int main(int argn, char **argv){
   // name, population
   mc = new_MonteCarlo("Test",p);
   // MonteCarlo, steps, print
-  run_MonteCarlo(mc,100,10);
+  printf("#%i\t%i\n",steps/prints,npeople);
+  run_MonteCarlo(mc,steps,prints);
   
   
   return 0;

@@ -4,18 +4,16 @@
 #include "people.h"
 
 int integrate(People *people, float dt){
-  //v = d/t  ->  d = v*t
-  float x;
-  float y;
-
-  people->position[]
-    people->velocity[]
-
-  
-
-    
-
-
+  //v = d/dt  ->  d = v*dt
+  float d,v;
+  //update in X
+  v = people->velocity[0];
+  d = v*dt;
+  people->position[0] += d;
+  //update in Y
+  v = people->velocity[1];
+  d = v*dt;
+  people->position[1] += d;
   return 1;
 }
 
@@ -40,30 +38,25 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints){
   j=0;
 
   //printing step 0
-  printf("iteration %i\n",i);
-  for(k=0;k< mc.population.iterator;k++){
-    print_People(mc.population.people[k]);
-  }
+  //printf("iteration %i\n",i);
+  //for(k=0;k< mc.population.iterator;k++){
+  //  print_People(mc.population.people[k]);
+  //}
   
-  for(i=0;i<=steps;i++){
+  for(i=0;i<steps;i++){
     //Montecarlo integration
-
-      for(k=0;k< mc.population.iterator;k++){
-	//update the position of the people
-	integrate( &mc.population.people[k],dt );
-      }
-
-
-    
-    
+    for(k=0;k< mc.population.iterator;k++){
+      //update the position of the people
+      integrate( &mc.population.people[k],dt );
+    }
+    j++;
     if (j == prints){
-      printf("iteration %i\n",i);
+      printf("#iteration %i\n",i);
       for(k=0;k< mc.population.iterator;k++){
 	print_People(mc.population.people[k]);
       }
       j=0;
-    }
-    j++;
+    }    
   }
 
   
