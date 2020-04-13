@@ -11,6 +11,7 @@ People new_People(float age, int gender, int status, float time_recovery, float 
   people.position[1] = p_y;
   people.velocity[0] = r_x;
   people.velocity[1] = r_y;
+  people.updated = false;
   return people;
 
 }

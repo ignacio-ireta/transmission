@@ -10,10 +10,12 @@ int main(int argn, char **argv){
   Population p;
   MonteCarlo mc;
   int steps, prints, npeople;
-
-  steps=10;
+  float radii;
+  
+  steps=50;
   prints=1;
   npeople=5;
+  radii=1.0;
   
   /*age, 
     gender [0=man,1=woman], 
@@ -23,11 +25,11 @@ int main(int argn, char **argv){
     direction [x,y]
   */
   
-  a1 = new_People(18, 1, 0, 0.0, 0.0, 0.0, 1.0, 0.0);
-  a2 = new_People(28, 0, 0, 0.0, 1.0, 3.0, 1.0, 1.0);
-  a3 = new_People(38, 1, 0, 0.0, 2.0, 5.0, 2.0, 4.0);
-  a4 = new_People(48, 0, 0, 0.0, 4.0, 6.0, 3.0, 1.0);
-  a5 = new_People(60, 1, 0, 0.0, 6.0, 8.0, 2.0, 4.0);
+  a1 = new_People(18, 1, 0, 0.0, 0.0, 0.0, 0.0, 0.0);
+  a2 = new_People(28, 0, 0, 0.0, 5.0, 0.0, -1.0, 0.0);
+  a3 = new_People(38, 1, 0, 0.0, -2.0, 5.0, -1.0, -1.0);
+  a4 = new_People(48, 0, 0, 0.0, 4.0, 6.0, -2.0, -1.0);
+  a5 = new_People(60, 1, 0, 0.0, -6.0, -8.0, 1.0, 2.0);
 
   p = new_Population("Mexico",8);
   
@@ -41,7 +43,7 @@ int main(int argn, char **argv){
   mc = new_MonteCarlo("Test",p);
   // MonteCarlo, steps, print
   printf("#%i\t%i\n",steps/prints,npeople);
-  run_MonteCarlo(mc,steps,prints);
+  run_MonteCarlo(mc,steps,prints,radii);
   
   
   return 0;

@@ -47,7 +47,7 @@ for line in data:
 
 ax.set(xlabel='x', ylabel='y',
        title='view2D')
-plt.axis([0, 50, 0, 50])
+plt.axis([-10, 10, -10, 10])
 
 
 ax.grid()
