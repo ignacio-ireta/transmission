@@ -9,7 +9,7 @@ extern "C" {
   
 typedef struct{
   char name[128];
-  People people[8];
+  People *people;
   int size; //size of population 8
   int iterator;  // internal iterator to control the actual population
 }Population;

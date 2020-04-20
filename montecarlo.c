@@ -65,27 +65,45 @@ int interaction(Population *population, float radii){
   return 1;
 }
 
-int integrate(People *people, float dt){
+int integrate(People *people, float dt, float x_A, float x_B, float y_A, float y_B){
   //v = d/dt  ->  d = v*dt
   float d,v;
   //update in X
   v = people->velocity[0];
   d = v*dt;
   people->position[0] += d;
+
+  //element exit to left side.
+  if (people->position[0] < x_A){  
+    people->position[0] = x_B + (people->position[0] - x_A);
+  }else if ( x_B < people->position[0]){   //element exit to right side.
+    people->position[0] = x_A +  (people->position[0] - x_B);
+  }
+  
   //update in Y
   v = people->velocity[1];
   d = v*dt;
   people->position[1] += d;
+
+    //element exit to top.
+  if (people->position[1] > y_A){  
+    people->position[1] = y_B + (people->position[1] - y_A);
+  } else if ( people->position[1] < y_B ){   //element exit to right side.
+    people->position[1] = y_A +  (people->position[1] - y_B);
+  }
+
   return 1;
 }
 
 
-MonteCarlo new_MonteCarlo(char name[], Population population){
+MonteCarlo new_MonteCarlo(char name[], Population population, float A, float B){
   MonteCarlo mc;
   sprintf(mc.name,"%s",name);
   mc.population = population;
   mc.steps=0;
   mc.prints=0;
+  mc.A = A;
+  mc.B = B;
   return mc;
 }
 
@@ -94,7 +112,14 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii){
   int j;
   int k;
   float dt;
+  float x_A,x_B,y_A,y_B;
 
+  x_A = -mc.A/2;
+  x_B = mc.A/2;
+  y_A = mc.B/2;
+  y_B = -mc.B/2;
+
+  
   dt=1.0;
   
   j=0;
@@ -116,7 +141,7 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii){
 
     for(k=0;k< mc.population.iterator;k++){
       //update the position of the people
-      integrate( &mc.population.people[k],dt );
+      integrate( &mc.population.people[k],dt,x_A,x_B,y_A,y_B);
     }
 
     //for(k=0;k< mc.population.iterator;k++){

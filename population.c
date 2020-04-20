@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "population.h"
 #include "people.h"
   
@@ -6,6 +7,7 @@
 Population new_Population(char name[], int size){
   Population p;
   sprintf(p.name,"%s",name);
+  p.people = malloc(size*sizeof(People));
   p.size = size;
   p.iterator = 0;
   return p;

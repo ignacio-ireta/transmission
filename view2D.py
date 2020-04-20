@@ -14,7 +14,13 @@ from time import sleep
 with open("view2D.dat") as f:
     data = f.readlines()
 
-iterations, npeople = data[0].split("\t")
+iterations, npeople, x_As, x_Bs, y_As, y_Bs = data[0].split("\t")
+x_A = float(x_As)
+x_B = float(x_Bs)
+y_A = float(y_As)
+y_B = float(y_Bs)
+
+
 iterations = iterations[1:]
 
 npeople = int(npeople)
@@ -47,16 +53,25 @@ for line in data:
 
 ax.set(xlabel='x', ylabel='y',
        title='view2D')
-plt.axis([-10, 10, -10, 10])
+plt.axis([x_A, x_B,  y_A, y_B])
 
 
 ax.grid()
 
-
+#n = 0
 for b in range(len(X[0])):   
+    plt.cla()
+    ax.set(xlabel='x', ylabel='y',
+           title='view2D')
+    plt.axis([x_A, x_B,  y_A, y_B])        
+    ax.grid()
+    
     for u,v in zip(X,Y):
-        ax.plot(u[:b], v[:b],'ko-')
-    plt.pause(1.0)
+        #if n>1:
+        #    ax.plot(u[:b-1], v[:b-1],'ro')
+        #n=n+1
+        ax.plot(u[b-1:b], v[b-1:b],'ko')
+    plt.pause(0.1)
 
     
 fig.savefig("view2D.png")
