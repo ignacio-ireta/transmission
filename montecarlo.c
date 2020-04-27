@@ -13,19 +13,19 @@ int updateTrajectory(People *k, People *m){
   c = m->velocity[0];
   d = m->velocity[1];
   m1 = sqrt(a*a + b*b);
-  m2 = sqrt(c*c + d*d);
+   m2 = sqrt(c*c + d*d);
   momentum = m1 + m2;
-  srand(time(0));
+  //srand(time(0));
   randomNumber= (float)rand() / (float)RAND_MAX ;
   m1 = randomNumber*momentum;
   m2 = momentum - m1;
-  srand(time(0));
+  //srand(time(0));
   theta = ((float)rand() / (float)RAND_MAX)*3.1416*2.0 ;
   W = cos(theta)*m1;
   Z = sin(theta)*m1;
   k->velocity[0] = W;
   k->velocity[1] = Z;
-  srand(time(0));
+  //srand(time(0));
   theta = ((float)rand() / (float)RAND_MAX)*3.1416*2.0 ;
   W = cos(theta)*m2;
   Z = sin(theta)*m2;
@@ -35,14 +35,21 @@ int updateTrajectory(People *k, People *m){
 }
 
 
-boolean intersection(People k, People m,float radii){
+boolean intersection(People *k, People *m,float radii){
   float a,b,c,d,distance;
-  a = k.position[0];
-  b = k.position[1];
-  c = m.position[0];
-  d = m.position[1];
+  a = k->position[0];
+  b = k->position[1];
+  c = m->position[0];
+  d = m->position[1];
   distance = sqrt(pow(c-a,2) + pow(d-b,2));
   if (distance <= radii){
+    if(  (k->status==1) && (m->status==0)){
+      m->status=1;
+    }else if((k->status==0) && (m->status==1)) {
+      k->status=1;
+    }
+
+    
     return true;
   }else{
     return false;
@@ -56,8 +63,9 @@ int interaction(Population *population, float radii){
     //update the position of the people
     for(m=k+1;m < population->iterator;m++){
       //update the position of the people
-      if (intersection(population->people[k],population->people[m],radii)){
+      if (intersection(&population->people[k],&population->people[m],radii)){
 	//printf("interseciontion! %i,%i\n",k,m);
+
 	updateTrajectory(&population->people[k],&population->people[m]);
       }
     }
@@ -107,11 +115,11 @@ MonteCarlo new_MonteCarlo(char name[], Population population, float A, float B){
   return mc;
 }
 
-int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii){
+int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii,float dt){
   int i=0;
   int j;
   int k;
-  float dt;
+  //float dt;
   float x_A,x_B,y_A,y_B;
 
   x_A = -mc.A/2;
@@ -120,7 +128,7 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii){
   y_B = -mc.B/2;
 
   
-  dt=1.0;
+  //dt=1.0;
   
   j=0;
 

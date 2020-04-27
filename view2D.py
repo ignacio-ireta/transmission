@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from time import sleep
 
-
+ccolor=['k','r','g']
 # Data for plotting
 
 #t = np.arange(0.0, 2.0, 0.01)
@@ -28,6 +28,7 @@ iterations = int(iterations)
 
 X = [[] for x in range(npeople)]
 Y = [[] for x in range(npeople)]
+C = [[] for x in range(npeople)]
 
 fig, ax = plt.subplots()
 
@@ -39,13 +40,17 @@ for line in data:
         age, gender, status, time_recovery, position, velocity = line.split("\t")
 
         position = position[1:-2]
-        print(position)
+        #print(position)
         x,y = position.split(",")
         x = float(x)
         y=float(y)
-        print(iterator)
+        c=int(status)
+        #print(iterator)
+        #print(c)
         X[iterator].append(x)
         Y[iterator].append(y)
+        C[iterator].append(c)
+        
         if iterator == npeople-1:
             iterator = 0
         else:
@@ -65,13 +70,16 @@ for b in range(len(X[0])):
            title='view2D')
     plt.axis([x_A, x_B,  y_A, y_B])        
     ax.grid()
-    
-    for u,v in zip(X,Y):
+
+    for u,v,c in zip(X,Y,C):
         #if n>1:
         #    ax.plot(u[:b-1], v[:b-1],'ro')
         #n=n+1
-        ax.plot(u[b-1:b], v[b-1:b],'ko')
-    plt.pause(0.1)
+        thecolor=c[b:b+1][0]
+        #thecolor=u[b-1:b]
+        #print(thecolor)
+        ax.plot(u[b:b+1], v[b:b+1],'o',color=ccolor[thecolor])
+    plt.pause(0.001)
 
     
 fig.savefig("view2D.png")

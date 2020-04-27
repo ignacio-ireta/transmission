@@ -15,15 +15,21 @@ int main(int argn, char **argv){
   int steps, prints, npeople;
   float radii;
   float A,B; //limits for wide and height AxB where (0,0) is in the center of the region.
+  float v_A, v_B; //limits to velocity
   int i;
   float x0,x1,v0,v1;
+  float dt;
 
-  steps=50;
+  steps=1000;
   prints=1;
-  npeople=2048;
-  radii=1.0;
-  A=20.0;
-  B=20.0;
+  npeople=500;
+  radii=5.0;
+  A=500.0;
+  B=500.0;
+  v_A = 10.0;
+  v_B = 10.0;
+  dt=0.1;
+
   
   /*age, 
     gender [0=man,1=woman], 
@@ -42,15 +48,23 @@ int main(int argn, char **argv){
   */
 
   p = new_Population("Mexico",npeople);
-    srand(time(0));
-  for (i=0;i<npeople;i++){
-    x0=  (((float)rand() / (float)RAND_MAX) * 20.0)-10.0;
-    x1=  (((float)rand() / (float)RAND_MAX) * 20.0)-10.0;
-    v0=  (((float)rand() / (float)RAND_MAX) * 20.0)-10.0;
-    v1=  (((float)rand() / (float)RAND_MAX) * 20.0)-10.0;
+  srand(time(0));
+  //sick
+  v0=  (((float)rand() / (float)RAND_MAX) * v_A)-(v_A/2.0);
+  v1=  (((float)rand() / (float)RAND_MAX) * v_B)-(v_B/2.0);
+  add_people_to_population(&p, new_People(18, 1, 1, 0.0, 0,0,v0,v1));
+    
+  for (i=1;i<npeople;i++){
+  
+    x0=  (((float)rand() / (float)RAND_MAX) * A)-(A/2.0);
+    x1=  (((float)rand() / (float)RAND_MAX) * B)-(B/2.0);
+    v0=  (((float)rand() / (float)RAND_MAX) * v_A)-(v_A/2.0);
+    v1=  (((float)rand() / (float)RAND_MAX) * v_B)-(v_B/2.0);
     add_people_to_population(&p, new_People(18, 1, 0, 0.0, x0,x1,v0,v1));
   }
 
+
+  
   
   /*
     add_people_to_population(&p,a1);
@@ -64,7 +78,7 @@ int main(int argn, char **argv){
   mc = new_MonteCarlo("Test",p, A, B);
   // MonteCarlo, steps, print
   printf("#%i\t%i\t%lf\t%lf\t%lf\t%lf\n",steps/prints,npeople,-A/2,A/2,-B/2,B/2);
-  run_MonteCarlo(mc,steps,prints,radii);
+  run_MonteCarlo(mc,steps,prints,radii,dt);
   
   
   return 0;
