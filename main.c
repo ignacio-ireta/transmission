@@ -18,17 +18,18 @@ int main(int argn, char **argv){
   float v_A, v_B; //limits to velocity
   int i;
   float x0,x1,v0,v1;
-  float dt;
+  float dt,rt;
 
   steps=1000;
   prints=1;
-  npeople=500;
+  npeople=100;
   radii=5.0;
-  A=500.0;
-  B=500.0;
+  A=100.0;
+  B=100.0;
   v_A = 10.0;
   v_B = 10.0;
   dt=0.1;
+  rt=200.0; //recovery time (in steps)
 
   
   /*age, 
@@ -52,7 +53,7 @@ int main(int argn, char **argv){
   //sick
   v0=  (((float)rand() / (float)RAND_MAX) * v_A)-(v_A/2.0);
   v1=  (((float)rand() / (float)RAND_MAX) * v_B)-(v_B/2.0);
-  add_people_to_population(&p, new_People(18, 1, 1, 0.0, 0,0,v0,v1));
+  add_people_to_population(&p, new_People(18, 1, 1, rt, 0,0,v0,v1));
     
   for (i=1;i<npeople;i++){
   
@@ -78,7 +79,7 @@ int main(int argn, char **argv){
   mc = new_MonteCarlo("Test",p, A, B);
   // MonteCarlo, steps, print
   printf("#%i\t%i\t%lf\t%lf\t%lf\t%lf\n",steps/prints,npeople,-A/2,A/2,-B/2,B/2);
-  run_MonteCarlo(mc,steps,prints,radii,dt);
+  run_MonteCarlo(mc,steps,prints,radii,dt,rt);
   
   
   return 0;
