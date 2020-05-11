@@ -4,6 +4,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from time import sleep
+from matplotlib.animation import FuncAnimation
+
 
 ccolor=['k','r','g']
 # Data for plotting
@@ -14,11 +16,12 @@ ccolor=['k','r','g']
 with open("view2D.dat") as f:
     data = f.readlines()
 
-iterations, npeople, x_As, x_Bs, y_As, y_Bs = data[0].split("\t")
+iterations, npeople, x_As, x_Bs, y_As, y_Bs,r_circle = data[0].split("\t")
 x_A = float(x_As)
 x_B = float(x_Bs)
 y_A = float(y_As)
 y_B = float(y_Bs)
+r_circle=float(r_circle)
 
 
 iterations = iterations[1:]
@@ -38,7 +41,6 @@ iterator = 0
 for line in data:
     if not "#" in line[0]:        
         age, gender, status, time_recovery, position, velocity = line.split("\t")
-
         position = position[1:-2]
         #print(position)
         x,y = position.split(",")
@@ -56,6 +58,10 @@ for line in data:
         else:
             iterator = iterator+1
 
+#print(X)
+#print(Y)
+#print(C)
+            
 ax.set(xlabel='x', ylabel='y',
        title='view2D')
 plt.axis([x_A, x_B,  y_A, y_B])
@@ -75,14 +81,41 @@ for b in range(len(X[0])):
         #if n>1:
         #    ax.plot(u[:b-1], v[:b-1],'ro')
         #n=n+1
-        thecolor=c[b:b+1][0]
+        thecolor=c[b]
         #thecolor=u[b-1:b]
         #print(thecolor)
-        ax.plot(u[b:b+1], v[b:b+1],'o',color=ccolor[thecolor])
-    plt.pause(0.001)
+        circle = plt.Circle((u[b], v[b]), r_circle, color=ccolor[thecolor])
+        ax.add_artist(circle)
+        #ax.plot(u[b:b+1], v[b:b+1],'o',color=ccolor[thecolor])
+    plt.draw()
+    fig.savefig("animation/"+("%04d"%b)+"-view2D.png")
+    #plt.pause(0.0001) 
 
-    
-fig.savefig("view2D.png")
-plt.show()
+
+
+####def update(i):
+####    for u,v,c in zip(X,Y,C):
+####        #if n>1:
+####        #    ax.plot(u[:b-1], v[:b-1],'ro')
+####        #n=n+1
+####        thecolor=c[i]
+####        #thecolor=u[b-1:b]
+####        #print(thecolor)
+####        circle = plt.Circle((u[i], v[i]), r_circle, color=ccolor[thecolor])
+####        ax.add_artist(circle)
+####        #ax.plot(u[b:b+1], v[b:b+1],'o',color=ccolor[thecolor])
+####
+####    #x = np.linspace(0, 4, 1000)
+####    #y = np.sin(2 * np.pi * (x - 0.01 * i))
+####    #line.set_data(x, y)
+####    #return ax,    
+####
+####    
+####animation = FuncAnimation(fig, update, interval=10)
+####plt.show()
+####    
+####    
+#fig.savefig("view2D.png")
+#plt.show()
 
 
