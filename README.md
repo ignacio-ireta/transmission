@@ -1,6 +1,6 @@
 <h1>Transmission</h1>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/TpM7fpkYzZQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[<img src="https://img.youtube.com/vi/TpM7fpkYzZQ/maxresdefault.jpg" width="50%">](https://youtu.be/TpM7fpkYzZQ)
 
 <p>
 
