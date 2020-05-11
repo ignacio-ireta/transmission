@@ -11,18 +11,18 @@ typedef int boolean;
 
   
 typedef struct{
-  float age;
+  double age;
   int gender; // [0=man,1=woman], 
   int status; // [0=healty, 1=sick, 2=immune, -1=dead],
-  float time_recovery;// [hours]
-  float position[2]; //[x,y] m
-  float velocity[2]; // [x,y] m
+  double time_recovery;// [hours]
+  double position[2]; //[x,y] m
+  double velocity[2]; // [x,y] m
   boolean updated;
 }People;
 
 
 
-  People new_People(float age, int gender, int status, float time_recovery, float p_x, float p_y, float r_x, float r_y); 
+  People new_People(double age, int gender, int status, double time_recovery, double p_x, double p_y, double r_x, double r_y); 
 
   void print_People(People people);
   

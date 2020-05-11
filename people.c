@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "people.h"
 
-People new_People(float age, int gender, int status, float time_recovery, float p_x, float p_y, float r_x, float r_y){
+People new_People(double age, int gender, int status, double time_recovery, double p_x, double p_y, double r_x, double r_y){
   People people;
   people.age = age;
   people.gender = gender;

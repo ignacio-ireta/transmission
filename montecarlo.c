@@ -20,12 +20,12 @@ int healthcare(People *k){
 
 //Elastic Collision implementation
 //https://williamecraver.wixsite.com/elastic-equations
-int updateTrajectory(People *k, People *m,float radii,float A, float B){
-  float v1,v2;
-  float v1x,v1y,v2x,v2y,a,b,c,d,x1,y1,x2,y2,phi,theta1,theta2,pi2;
-  float epsilon = 1e-10;
-  float u,w,mycos1,mysin1;
-  float norm, dot_product;
+int updateTrajectory(People *k, People *m,double radii,double A, double B){
+  double v1,v2;
+  double v1x,v1y,v2x,v2y,a,b,c,d,x1,y1,x2,y2,phi,theta1,theta2,pi2;
+  double epsilon = 1e-10;
+  double u,w,mycos1,mysin1;
+  double norm, dot_product;
   v1x = k->velocity[0];
   v1y = k->velocity[1];
   v2x = m->velocity[0];
@@ -58,7 +58,7 @@ int updateTrajectory(People *k, People *m,float radii,float A, float B){
     }
   }
 
-  //check border in X: a left and c right
+  //check border in X: a top and c bottom
   if (y1 < 0.0){
     if ((B+y1) < radii){
       if(y2 > 0.0){
@@ -69,7 +69,7 @@ int updateTrajectory(People *k, People *m,float radii,float A, float B){
     }
   }
 
-  //check border in X: a right and c left
+  //check border in X: a bottom and c top
   if (y1 > 0.0){
     if ((B-y1) < radii){
       if(y2 < 0.0){
@@ -94,6 +94,8 @@ int updateTrajectory(People *k, People *m,float radii,float A, float B){
   m->velocity[0] = v2x - (dot_product/norm)*(x2-x1);
   m->velocity[1] = v2y - (dot_product/norm)*(y2-y1);
 
+
+  
 //  
 //  v1 = sqrt(a*a + b*b);
 //  v2 = sqrt(c*c + d*d);
@@ -230,8 +232,8 @@ int updateTrajectory(People *k, People *m,float radii,float A, float B){
 }
 
 //rt = set recovery time
-boolean intersection(People *k, People *m,float radii, float rt, float A, float B){
-  float a,b,c,d,distance;
+boolean intersection(People *k, People *m,double radii, double rt, double A, double B){
+  double a,b,c,d,distance;
   a = k->position[0];
   b = k->position[1];
   c = m->position[0];
@@ -292,7 +294,7 @@ boolean intersection(People *k, People *m,float radii, float rt, float A, float 
 
 
   distance = sqrt(pow(c-a,2) + pow(d-b,2));
-  if (fabs(distance - radii) <= 1e-1){
+  if (distance <= radii){
     if(  (k->status==1) && (m->status==0)){
       m->status=1;
       m->time_recovery = rt;
@@ -307,7 +309,7 @@ boolean intersection(People *k, People *m,float radii, float rt, float A, float 
 }
 
 
-int interaction(Population *population, float radii, float rt, float A, float B){
+int interaction(Population *population, double radii, double rt, double A, double B){
   int k,m;
   for(k=0;k< population->iterator;k++){
     //update the position of the people
@@ -316,20 +318,20 @@ int interaction(Population *population, float radii, float rt, float A, float B)
       if (intersection(&population->people[k],&population->people[m],radii,rt,A,B)){
 	//printf("interseciontion! %i,%i\n",k,m);
 	updateTrajectory(&population->people[k],&population->people[m],radii,A,B);
+
       }
     }
   }
   return 1;
 }
 
-int integrate(People *people, float dt, float x_A, float x_B, float y_A, float y_B){
+int integrate(People *people, double dt, double x_A, double x_B, double y_A, double y_B){
   //v = d/dt  ->  d = v*dt
-  float d,v;
+  double d,v;
   //update in X
   v = people->velocity[0];
   d = v*dt;
   people->position[0] += d;
-
 //  //element exit to left side.
 //  if (people->position[0] < x_A){  
 //    people->position[0] = x_B + (people->position[0] - x_A);
@@ -352,9 +354,9 @@ int integrate(People *people, float dt, float x_A, float x_B, float y_A, float y
   return 1;
 }
 
-int fix_borders(People *people, float dt, float x_A, float x_B, float y_A, float y_B){
+int fix_borders(People *people, double dt, double x_A, double x_B, double y_A, double y_B){
   //v = d/dt  ->  d = v*dt
-  float d,v;
+  double d,v;
   //update in X
 
   //element exit to left side.
@@ -377,7 +379,7 @@ int fix_borders(People *people, float dt, float x_A, float x_B, float y_A, float
 
 
 
-MonteCarlo new_MonteCarlo(char name[], Population population, float A, float B){
+MonteCarlo new_MonteCarlo(char name[], Population population, double A, double B){
   MonteCarlo mc;
   sprintf(mc.name,"%s",name);
   mc.population = population;
@@ -388,12 +390,12 @@ MonteCarlo new_MonteCarlo(char name[], Population population, float A, float B){
   return mc;
 }
 
-int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii,float dt,float rt){
+int run_MonteCarlo(MonteCarlo mc, int steps, int prints, double radii,double dt,double rt){
   int i=0;
   int j;
   int k;
   //float dt;
-  float x_A,x_B,y_A,y_B;
+  double x_A,x_B,y_A,y_B;
 
   x_A = -mc.A/2;
   x_B = mc.A/2;
@@ -421,6 +423,7 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii,float dt,fl
     //Montecarlo integration
     //the last two parameters are the half of the region (optimize)
 
+
     interaction( &mc.population, radii,rt,x_B,y_A);
 
     
@@ -436,7 +439,6 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii,float dt,fl
     for(k=0;k< mc.population.iterator;k++){
       fix_borders( &mc.population.people[k],dt,x_A,x_B,y_A,y_B);
     }
-
 
     
     //for(k=0;k< mc.population.iterator;k++){

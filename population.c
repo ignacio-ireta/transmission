@@ -1,8 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "population.h"
 #include "people.h"
-  
+
+boolean check(Population p, double x, double y, double radii){
+  double distance;
+  int i;
+  for(i=0; i < p.iterator;i++){
+      distance = sqrt(pow(p.people[i].position[0]-x,2) + pow(p.people[i].position[1]-y,2));
+      if (distance <= radii){
+	return false;
+      }
+  }
+  return true;  
+}
 
 Population new_Population(char name[], int size){
   Population p;
@@ -22,7 +34,5 @@ int add_people_to_population(Population *p, People a){
   }else{
     return 0;
   }
-  
-
 }
 

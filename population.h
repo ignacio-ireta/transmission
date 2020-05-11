@@ -13,7 +13,8 @@ typedef struct{
   int size; //size of population 8
   int iterator;  // internal iterator to control the actual population
 }Population;
-
+  
+  boolean check(Population p, double x, double y, double radii);
   Population new_Population(char name[], int size);
   int add_people_to_population(Population *p, People a);
 

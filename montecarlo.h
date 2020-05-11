@@ -12,12 +12,12 @@ typedef struct{
   Population population;
   int steps;
   int prints;
-  float A; //wide
-  float B; //high
+  double A; //wide
+  double B; //high
 }MonteCarlo;
 
-  MonteCarlo new_MonteCarlo(char name[], Population population, float A, float B);
-  int run_MonteCarlo(MonteCarlo mc, int steps, int prints, float radii, float dt, float rt);
+  MonteCarlo new_MonteCarlo(char name[], Population population, double A, double B);
+  int run_MonteCarlo(MonteCarlo mc, int steps, int prints, double radii, double dt, double rt);
 
 #ifdef __cplusplus
 } /* extern "C" */
