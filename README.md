@@ -1,6 +1,6 @@
 <h1>Transmission</h1>
 
-[<img src="https://img.youtube.com/vi/TpM7fpkYzZQ/maxresdefault.jpg" width="50%">](https://youtu.be/TpM7fpkYzZQ)
+[<img src="https://img.youtube.com/vi/TpM7fpkYzZQ/hqdefault.jpg" width="100%">](https://youtu.be/TpM7fpkYzZQ)
 
 <p>
 
