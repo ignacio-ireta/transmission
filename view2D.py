@@ -38,8 +38,10 @@ fig, ax = plt.subplots()
 
 iterator = 0
 
-for line in data:
-    if not "#" in line[0]:        
+for line in data[1:]:
+    if "#" in line[0]:
+        iteration, healty,sick,immune,dead = line.split("\t")
+    else:
         age, gender, status, time_recovery, position, velocity = line.split("\t")
         position = position[1:-2]
         #print(position)
@@ -65,16 +67,22 @@ for line in data:
 ax.set(xlabel='x', ylabel='y',
        title='view2D')
 plt.axis([x_A, x_B,  y_A, y_B])
+#legend((line1, line2, line3), ('label1', 'label2', 'label3'))
 
 
 ax.grid()
 
 #n = 0
-for b in range(len(X[0])):   
+####for b in range(len(X[0])):
+for b in range(1):
     plt.cla()
     ax.set(xlabel='x', ylabel='y',
-           title='view2D')
+           title='TICS UNAM Transmission')
     plt.axis([x_A, x_B,  y_A, y_B])        
+    #plt.text(-40,-10, "Healty: "+, fontsize=12)
+    #plt.text(-40,-20, "Sick: ", fontsize=12)
+    #plt.text(-40,-30, "Immune: ", fontsize=12)
+    #plt.text(-40,-40, "Dead: ", fontsize=12)
     ax.grid()
 
     for u,v,c in zip(X,Y,C):
@@ -88,7 +96,14 @@ for b in range(len(X[0])):
         ax.add_artist(circle)
         #ax.plot(u[b:b+1], v[b:b+1],'o',color=ccolor[thecolor])
     plt.draw()
-    fig.savefig("animation/"+("%04d"%b)+"-view2D.png")
+
+#plt.show()
+
+    #######fig.savefig("animation/"+("%04d"%b)+"-view2D.png")
+
+
+
+
     #plt.pause(0.0001) 
 
 
