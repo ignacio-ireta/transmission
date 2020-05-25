@@ -20,7 +20,7 @@ int main(int argn, char **argv){
   double x0,x1,v0,v1;
   double dt,rt;
   boolean check_coordinates;
-  steps=5000;
+  steps=1000;
   prints=1;
   npeople=128;
   radii=2.0;
