@@ -17,12 +17,24 @@ int healthcare(People *k){
   return 1;
 }
 
+/**
+ * @brief Updates the trajectory of two people after a collision
+ * 
+ * @param k Pointer to the first person
+ * @param m Pointer to the second person
+ * @param radii The radius of the people
+ * @param A The width of the simulation area
+ * @param B The height of the simulation area
+ * @return int Returns 1 if the update was successful
+ */
 int updateTrajectory(People *k, People *m, double radii, double A, double B){
   double v1, v2;
   double v1x, v1y, v2x, v2y, a, b, c, d, x1, y1, x2, y2, phi, theta1, theta2, pi2;
   double epsilon = 1e-10;
   double u, w, mycos1, mysin1;
   double norm, dot_product;
+
+  // Get the velocities and positions of the two people
   v1x = k->velocity[0];
   v1y = k->velocity[1];
   v2x = m->velocity[0];
@@ -32,67 +44,94 @@ int updateTrajectory(People *k, People *m, double radii, double A, double B){
   x2 = m->position[0];
   y2 = m->position[1];
 
-  // Check border in X: a left and c right
+  // Check if the two people have collided with the left and right walls
+  // If they have, update their positions accordingly
   if (x1 < 0.0 && (A + x1) < radii && x2 > 0.0 && (A - x2) < radii) {
     x2 = -2.0 * A + x2;
   }
-
-  // Check border in X: a right and c left
   if (x1 > 0.0 && (A - x1) < radii && x2 < 0.0 && (A + x2) < radii) {
     x1 = -2.0 * A + x1;
   }
 
-  // Check border in X: a top and c bottom
+  // Check if the two people have collided with the top and bottom walls
+  // If they have, update their positions accordingly
   if (y1 < 0.0 && (B + y1) < radii && y2 > 0.0 && (B - y2) < radii) {
     y2 = -2.0 * B + y2;
   }
-
-  // Check border in X: a bottom and c top
   if (y1 > 0.0 && (B - y1) < radii && y2 < 0.0 && (B + y2) < radii) {
     y1 = -2.0 * B + y1;
   }
   
+  // Calculate the distance between the two people
   norm = fabsf(pow(x1-x2,2.0)+pow(y1-y2,2.0));
+
+  // Calculate the dot product of the velocities and the distance vector
   dot_product = (v1x-v2x)*(x1-x2) + (v1y-v2y)*(y1-y2);
+
+  // Update the velocity of the first person
   k->velocity[0] = v1x - (dot_product/norm)*(x1-x2);
   k->velocity[1] = v1y - (dot_product/norm)*(y1-y2);
 
+  // Calculate the distance between the two people (again)
   norm = fabsf(pow(x2-x1,2.0)+pow(y2-y1,2.0));
+
+  // Calculate the dot product of the velocities and the distance vector (again)
   dot_product = (v2x-v1x)*(x2-x1) + (v2y-v1y)*(y2-y1);
+
+  // Update the velocity of the second person
   m->velocity[0] = v2x - (dot_product/norm)*(x2-x1);
   m->velocity[1] = v2y - (dot_product/norm)*(y2-y1);
 
+  // Return 1 to indicate that the update was successful
   return 1;  
 }
 
+/**
+ * Check if two people intersect given their positions, radii, and borders.
+ * If they intersect, update their status and time to recovery.
+ * 
+ * @param k Pointer to the first person
+ * @param m Pointer to the second person
+ * @param radii The radius of the people
+ * @param rt The time to recovery
+ * @param A The border in the X-axis
+ * @param B The border in the Y-axis
+ * 
+ * @return true if the people intersect, false otherwise
+ */
 boolean intersection(People *k, People *m, double radii, double rt, double A, double B){
   double a, b, c, d, distance;
+
+  // Get the positions of the people
   a = k->position[0];
   b = k->position[1];
   c = m->position[0];
   d = m->position[1];
 
-  // Check border in X: a left and c right
+  // Check if the people are crossing the left border
   if (a < 0.0 && (A+a) < radii && c > 0.0 && (A-c) < radii) {
     c = -2.0*A+c;
   }
 
-  // Check border in X: a right and c left
+  // Check if the people are crossing the right border
   if (a > 0.0 && (A-a) < radii && c < 0.0 && (A+c) < radii) {
     a = -2.0*A+a;
   }
 
-  // Check border in X: a left and c right
+  // Check if the people are crossing the bottom border
   if (b < 0.0 && (B+b) < radii && d > 0.0 && (B-d) < radii) {
     d = -2.0*B+d;
   }
 
-  // Check border in X: a right and c left
+  // Check if the people are crossing the top border
   if (b > 0.0 && (B-b) < radii && d < 0.0 && (B+d) < radii) {
     b = -2.0*B+b;
   }
   
+  // Calculate the distance between the people
   distance = sqrt(pow(c-a,2) + pow(d-b,2));
+
+  // If the people intersect, update their status and time to recovery
   if (distance <= radii){
     if ((k->status==1) && (m->status==0)){
       m->status=1;
