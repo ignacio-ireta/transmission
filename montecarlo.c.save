@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h> 
+#include <time.h>
 #include "montecarlo.h"
 #include "population.h"
 #include "people.h"
@@ -17,27 +17,12 @@ int healthcare(People *k){
   return 1;
 }
 
-/**
- * Updates the trajectory of two people based on their positions and velocities, and the size of the environment.
- * If a person is close to the border of the environment, their position is adjusted accordingly.
- * The new velocities are calculated based on the collision of the two people.
- * 
- * @param k Pointer to the first person
- * @param m Pointer to the second person
- * @param radii The size of the environment
- * @param A The width of the environment
- * @param B The height of the environment
- * 
- * @return 1 if the update was successful, 0 otherwise
- */
 int updateTrajectory(People *k, People *m, double radii, double A, double B){
   double v1, v2;
   double v1x, v1y, v2x, v2y, a, b, c, d, x1, y1, x2, y2, phi, theta1, theta2, pi2;
   double epsilon = 1e-10;
   double u, w, mycos1, mysin1;
   double norm, dot_product;
-  
-  // Extract the velocities and positions of the two people
   v1x = k->velocity[0];
   v1y = k->velocity[1];
   v2x = m->velocity[0];
@@ -47,69 +32,25 @@ int updateTrajectory(People *k, People *m, double radii, double A, double B){
   x2 = m->position[0];
   y2 = m->position[1];
 
-  // Check if person 1 is close to the left border and person 2 is close to the right border
+  // Check border in X: a left and c right
   if (x1 < 0.0 && (A + x1) < radii && x2 > 0.0 && (A - x2) < radii) {
-    // Adjust the position of person 2 to the left
     x2 = -2.0 * A + x2;
   }
 
-  // Check if person 1 is close to the right border and person 2 is close to the left border
+  // Check border in X: a right and c left
   if (x1 > 0.0 && (A - x1) < radii && x2 < 0.0 && (A + x2) < radii) {
-    // Adjust the position of person 1 to the left
     x1 = -2.0 * A + x1;
   }
 
-  // Check if person 1 is close to the top border and person 2 is close to the bottom border
+  // Check border in X: a top and c bottom
   if (y1 < 0.0 && (B + y1) < radii && y2 > 0.0 && (B - y2) < radii) {
-    // Adjust the position of person 2 to the top
     y2 = -2.0 * B + y2;
   }
 
-  // Check if person 1 is close to the bottom border and person 2 is close to the top border
+  // Check border in X: a bottom and c top
   if (y1 > 0.0 && (B - y1) < radii && y2 < 0.0 && (B + y2) < radii) {
-    // Adjust the position of person 1 to the top
     y1 = -2.0 * B + y1;
   }
-
-  // Calculate the new velocities of the two people based on their collision
-  a = v1x - v2x;
-  b = x1 - x2;
-  c = v1y - v2y;
-  d = y1 - y2;
-  norm = sqrt(b * b + d * d);
-  dot_product = a * b + c * d;
-  if (norm < epsilon) {
-    phi = 0.0;
-  } else {
-    phi = acos(dot_product / (norm * sqrt(a * a + c * c)));
-  }
-  theta1 = atan2(d, b);
-  theta2 = atan2(c, a);
-  pi2 = 0.5 * M_PI;
-  u = pi2 + theta1 - phi;
-  w = pi2 + theta2 + phi;
-  mycos1 = cos(u);
-  mysin1 = sin(u);
-  v1 = sqrt(a * a + c * c);
-  v2 = sqrt(b * b + d * d);
-  v1x = v1 * mycos1;
-  v1y = v1 * mysin1;
-  v2x = v2 * cos(w);
-  v2y = v2 * sin(w);
-
-  // Update the velocities and positions of the two people
-  k->velocity[0] = v1x;
-  k->velocity[1] = v1y;
-  m->velocity[0] = v2x;
-  m->velocity[1] = v2y;
-  k->position[0] = x1;
-  k->position[1] = y1;
-  m->position[0] = x2;
-  m->position[1] = y2;
-
-  // Return 1 to indicate that the update was successful
-  return 1;
-}
   
   norm = fabsf(pow(x1-x2,2.0)+pow(y1-y2,2.0));
   dot_product = (v1x-v2x)*(x1-x2) + (v1y-v2y)*(y1-y2);
@@ -124,18 +65,6 @@ int updateTrajectory(People *k, People *m, double radii, double A, double B){
   return 1;  
 }
 
-/**
- * Check if two people are intersecting, and update their status if necessary.
- * 
- * @param k Pointer to the first person
- * @param m Pointer to the second person
- * @param radii The radius of the people
- * @param rt The current time
- * @param A The width of the simulation area
- * @param B The height of the simulation area
- * 
- * @return true if the people are intersecting, false otherwise
- */
 boolean intersection(People *k, People *m, double radii, double rt, double A, double B){
   double a, b, c, d, distance;
   a = k->position[0];
@@ -143,30 +72,27 @@ boolean intersection(People *k, People *m, double radii, double rt, double A, do
   c = m->position[0];
   d = m->position[1];
 
-  // Check if the people are crossing the left border of the simulation area
+  // Check border in X: a left and c right
   if (a < 0.0 && (A+a) < radii && c > 0.0 && (A-c) < radii) {
-    c = -2.0*A+c; // Move the second person to the other side of the simulation area
+    c = -2.0*A+c;
   }
 
-  // Check if the people are crossing the right border of the simulation area
+  // Check border in X: a right and c left
   if (a > 0.0 && (A-a) < radii && c < 0.0 && (A+c) < radii) {
-    a = -2.0*A+a; // Move the first person to the other side of the simulation area
+    a = -2.0*A+a;
   }
 
-  // Check if the people are crossing the bottom border of the simulation area
+  // Check border in X: a left and c right
   if (b < 0.0 && (B+b) < radii && d > 0.0 && (B-d) < radii) {
-    d = -2.0*B+d; // Move the second person to the other side of the simulation area
+    d = -2.0*B+d;
   }
 
-  // Check if the people are crossing the top border of the simulation area
+  // Check border in X: a right and c left
   if (b > 0.0 && (B-b) < radii && d < 0.0 && (B+d) < radii) {
-    b = -2.0*B+b; // Move the first person to the other side of the simulation area
+    b = -2.0*B+b;
   }
   
-  // Calculate the distance between the two people
   distance = sqrt(pow(c-a,2) + pow(d-b,2));
-  
-  // If the people are intersecting, update their status and recovery time
   if (distance <= radii){
     if ((k->status==1) && (m->status==0)){
       m->status=1;
@@ -211,33 +137,26 @@ int integrate(People *people, double dt, double x_A, double x_B, double y_A, dou
   return 1;
 }
 
-int fix_borders(People *people, double dt, double x_A, double x_B, double y_A, double y_B, double radii){
-    // Son dos variables que inicializó Victor, pero no las usaremos
-    double d, v;
+int fix_borders(People *people, double dt, double x_A, double x_B, double y_A, double y_B){
+  // v = d/dt  ->  d = v*dt
+  double d, v;
+  // Update in X
 
-    // Le asignas la velocidad en X a la variable v
-    v = people->velocity[0];
-    // Le asignas la distancia en X a la variable d, pero de nuevo, no la usaremos
-    d = v*dt;
+  // Element exit to left side.
+  if (people->position[0] < x_A){  
+    people->position[0] = x_B + (people->position[0] - x_A);
+  } else if (x_B < people->position[0]){   // Element exit to right side.
+    people->position[0] = x_A +  (people->position[0] - x_B);
+  }
+  
+  // Element exit to top.
+  if (people->position[1] > y_A){  
+    people->position[1] = y_B + (people->position[1] - y_A);
+  } else if (people->position[1] < y_B){   // Element exit to right side.
+    people->position[1] = y_A +  (people->position[1] - y_B);
+  }
 
-    // Checas que, incluyendo el radio, no se salga de los límites en X
-    if (people->position[0] - radii < x_A || people->position[0] + radii > x_B) {
-        // Si se sale, inviertes la velocidad en X
-        people->velocity[0] = -people->velocity[0];
-    }  // Si no, no haces nada y de actualizas la posición en X
-    people->position[0] += people->velocity[0] * dt;
-
-    // Lo mismo va para la posición en Y
-    v = people->velocity[1];
-    d = v*dt;
-
-    // Checas que, incluyendo el radio, no se salga de los límites en Y & so on, and so forth...
-    if (people->position[1] - radii < y_B || people->position[1] + radii > y_A) {
-        people->velocity[1] = -people->velocity[1];
-    }
-    people->position[1] += people->velocity[1] * dt;
-    // Peeeero NO CAMBIA NADA
-    return 1;
+  return 1;
 }
 
 MonteCarlo new_MonteCarlo(char name[], Population population, double A, double B){
