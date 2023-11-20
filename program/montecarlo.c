@@ -252,7 +252,7 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, double radii, double dt
         printf("Warnning: no status recognized!\n");
     }
   }
-  printf("#%i\t%i\t%i\t%i\t%i\n", 0, healty, sick, immune, dead);
+  printf("# %i\t%i\t%i\t%i\t%i\n", 0, healty, sick, immune, dead);
   for (k = 0; k < mc.population.iterator; k++) {
     print_People(mc.population.people[k]);
   }
@@ -295,7 +295,7 @@ int run_MonteCarlo(MonteCarlo mc, int steps, int prints, double radii, double dt
             printf("Warnning: no status recognized!\n");
         }
       }
-      printf("#%i\t%i\t%i\t%i\t%i\n", i + 1, healty, sick, immune, dead);
+      printf("# %i\t%i\t%i\t%i\t%i\n", i + 1, healty, sick, immune, dead);
       for (k = 0; k < mc.population.iterator; k++) {
         print_People(mc.population.people[k]);
       }

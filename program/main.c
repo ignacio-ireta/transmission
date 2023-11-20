@@ -68,7 +68,7 @@ int main(int argn, char **argv){
   }
 
   mc = new_MonteCarlo("Test", p, A, B);
-  printf("#%i\t%i\t%lf\t%lf\t%lf\t%lf\t%lf\n", steps / prints, p.iterator, -A / 2, A / 2, -B / 2, B / 2, radii / 2.0);
+  printf("# %i\t%i\t%lf\t%lf\t%lf\t%lf\t%lf\n", steps / prints, p.iterator, -A / 2, A / 2, -B / 2, B / 2, radii / 2.0);
   run_MonteCarlo(mc, steps, prints, radii, dt, rt);
 
   return 0;
