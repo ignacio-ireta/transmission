@@ -44,6 +44,8 @@ pip install -r requirements.txt
 
 ## Transmisión de la información con la frontera cerrada
 
+![](images/closed_border.png)
+
 ## Comparación de las gráficas de transmisión de la información con la frontera abierta y cerrada
 
 ## Contribuidores
