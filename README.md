@@ -41,12 +41,16 @@ pip install -r requirements.txt
 ```
 
 ## Transmisión de la información con la frontera abierta
+En esta gráfica se muestra como se transmite la información entre 128 partículas con frontera abierta en un tiempo de recuperación de 1000 iteraciones y 2000 pasos de iteración.
+![](images/open_border.png)
 
 ## Transmisión de la información con la frontera cerrada
-
+En esta gráfica se muestra como se transmite la información entre 128 partículas con frontera cerrada en un tiempo de recuperación de 1000 iteraciones y 2000 pasos de iteración.
 ![](images/closed_border.png)
 
 ## Comparación de las gráficas de transmisión de la información con la frontera abierta y cerrada
+En esta gráfica se muestra la comparación de como se transmite la información entre 128 partículas con frontera abierta y cerrada en un tiempo de recuperación de 1000 iteraciones y 2000 pasos de iteración.
+![](images/both_borders.png)
 
 ## Contribuidores
 - José Ignacio Esparza Ireta
