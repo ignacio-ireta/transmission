@@ -22,7 +22,7 @@ int main(int argn, char **argv){
   double dt, rt;
   boolean check_coordinates;
 
-  steps = 1000;
+  steps = 2000;
   prints = 1;
   npeople = 128;
   radii = 2.0;
