@@ -177,19 +177,19 @@ int integrate(People *people, double dt, double x_A, double x_B, double y_A, dou
 }
 
 int fix_borders(People *people, double dt, double x_A, double x_B, double y_A, double y_B, double radii){
-    // Son dos variables que inicializó Victor, pero no las usaremos
+    // Inicializamos dos variables
     double d, v;
 
     // Le asignas la velocidad en X a la variable v
     v = people->velocity[0];
-    // Le asignas la distancia en X a la variable d, pero de nuevo, no la usaremos
+    // Le asignas la distancia en X a la variable d
     d = v*dt;
 
     // Checas que, incluyendo el radio, no se salga de los límites en X
     if (people->position[0] - radii < x_A || people->position[0] + radii > x_B) {
         // Si se sale, inviertes la velocidad en X
         people->velocity[0] = -people->velocity[0];
-    }  // Si no, no haces nada y de actualizas la posición en X
+    }  // Si no, no haces nada y le actualizas la posición en X
     people->position[0] += people->velocity[0] * dt;
 
     // Lo mismo va para la posición en Y
@@ -201,7 +201,7 @@ int fix_borders(People *people, double dt, double x_A, double x_B, double y_A, d
         people->velocity[1] = -people->velocity[1];
     }
     people->position[1] += people->velocity[1] * dt;
-    // Peeeero NO CAMBIA NADA
+    
     return 1;
 }
 
